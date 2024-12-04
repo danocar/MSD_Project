@@ -3,23 +3,22 @@ package com.example.project
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
 
+class PlantAdapter(
+    private val plants: MutableList<Plant>,
+    private val onAddClick: (Plant) -> Unit
+) : RecyclerView.Adapter<PlantAdapter.PlantViewHolder>() {
 
-class PlantAdapter(private val plants: MutableList<Plant>) : RecyclerView.Adapter<PlantAdapter.PlantViewHolder>() {
-
-    // ViewHolder class to hold references to each item's views
     class PlantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val plantImage: ImageView = itemView.findViewById(R.id.imgPlant)
         val plantName: TextView = itemView.findViewById(R.id.tvPlantName)
-        val plantLatinName: TextView = itemView.findViewById(R.id.tvLatinName) // Match your XML ID
-    }
-    fun updatePlants(newPlants: List<Plant>) {
-        plants.clear()
-        plants.addAll(newPlants)
-        notifyDataSetChanged()
+        val plantLatinName: TextView = itemView.findViewById(R.id.tvLatinName)
+        val btnAdd: ImageButton = itemView.findViewById(R.id.btnAdd)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlantViewHolder {
@@ -30,12 +29,21 @@ class PlantAdapter(private val plants: MutableList<Plant>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: PlantViewHolder, position: Int) {
         val plant = plants[position]
         holder.plantName.text = plant.name
-        holder.plantLatinName.text = plant.latinName.ifEmpty { "Unknown" }
-        // Handle image loading (e.g., use a library like Glide for URLs)
-        holder.plantImage.setImageResource(
-            if (plant.imageResId != 0) plant.imageResId else R.drawable.monstera
-        )
+        holder.plantLatinName.text = plant.latinName
+        holder.plantImage.setImageResource(plant.imageResId)
+
+        // Handle the + button click
+        holder.btnAdd.setOnClickListener {
+            onAddClick(plant)
+        }
     }
 
     override fun getItemCount(): Int = plants.size
+
+    fun updatePlants(newPlants: List<Plant>) {
+        plants.clear()
+        plants.addAll(newPlants)
+        Log.d("PlantAdapter", "Updated plants: ${plants.size}")
+        notifyDataSetChanged()
+    }
 }

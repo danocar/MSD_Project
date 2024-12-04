@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
+import android.util.Log
 
 class SecondFragment : Fragment() {
-
     private lateinit var plantAdapter: PlantAdapter
+    private val plantsViewModel: PlantsViewModel by activityViewModels()
     private lateinit var plantDao: PlantDao
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,18 +27,18 @@ class SecondFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
 
-        // Initialize the database and DAO
+        // Initialise plantDao from the database
         val database = PlantDatabase.getDatabase(requireContext())
         plantDao = database.plantDao()
 
         // Set up RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvFindPlants)
-        plantAdapter = PlantAdapter(mutableListOf())
+        plantAdapter = PlantAdapter(mutableListOf()) { plant ->
+            plantsViewModel.addPlantToFavourites(plant)
+            Toast.makeText(context, "${plant.name} added to My Plants!", Toast.LENGTH_SHORT).show()
+        }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = plantAdapter
-
-        // Save hardcoded plants to the database (if empty)
-        saveHardcodedPlantsToDatabase()
 
         // Load plants from the database
         loadPlantsFromDatabase()
@@ -52,12 +57,17 @@ class SecondFragment : Fragment() {
             }
         })
 
+        saveHardcodedPlantsToDatabase()
+
+
         return view
     }
+
 
     private fun saveHardcodedPlantsToDatabase() {
         lifecycleScope.launch {
             val existingPlants = plantDao.getAllPlants()
+
             if (existingPlants.isEmpty()) {
                 val hardcodedPlants = listOf(
                     Plant(name = "Aloe Vera", latinName = "Aloe vera", imageResId = R.drawable.aloe_vera),
@@ -78,6 +88,7 @@ class SecondFragment : Fragment() {
                     Plant(name = "ZZ Plant", latinName = "Zamioculcas zamiifolia", imageResId = R.drawable.zz_plant)
                 )
                 plantDao.insertAll(hardcodedPlants)
+                Log.d("SecondFragment", "Hardcoded plants inserted into database")
             }
         }
     }
@@ -85,7 +96,9 @@ class SecondFragment : Fragment() {
     private fun loadPlantsFromDatabase() {
         lifecycleScope.launch {
             val plants = plantDao.getAllPlants()
+            Log.d("SecondFragment", "Loaded plants: ${plants.size}")
             plantAdapter.updatePlants(plants)
+
         }
     }
 
