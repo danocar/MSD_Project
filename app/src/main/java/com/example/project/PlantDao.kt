@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Delete
 
 @Dao
 interface PlantDao {
@@ -21,6 +22,9 @@ interface PlantDao {
     suspend fun getAllPlants(): List<Plant>
 
     @Query("SELECT * FROM plants WHERE isFavourite = 1")
-    fun getFavouritePlants(): LiveData<List<Plant>>
+    fun getFavouritePlants(): LiveData<List<Plant>> // This returns LiveData for observing
+
+    @Delete
+    suspend fun deletePlant(plant: Plant)
 }
 

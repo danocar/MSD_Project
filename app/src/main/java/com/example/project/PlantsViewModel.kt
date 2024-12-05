@@ -17,14 +17,7 @@ class PlantsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // Retrieve all plants from the database
-    fun getAllPlants(callback: (List<Plant>) -> Unit) {
-        viewModelScope.launch {
-            val plants = plantDao.getAllPlants()
-            callback(plants)
-        }
-    }
-
+    // Add plant to favourites (update 'isFavourite' to true)
     fun addPlantToFavourites(plant: Plant) {
         viewModelScope.launch {
             // Update the existing plant, setting isFavourite to true
@@ -33,8 +26,14 @@ class PlantsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    // Remove plant from the database (from My Plants)
+    fun removePlantFromFavourites(plant: Plant) {
+        viewModelScope.launch {
+            plantDao.deletePlant(plant)  // This deletes the plant from the database
+        }
+    }
 
-
+    // Retrieve favourite plants (LiveData for observing)
     val favouritePlants: LiveData<List<Plant>> = plantDao.getFavouritePlants()
-}
 
+}
