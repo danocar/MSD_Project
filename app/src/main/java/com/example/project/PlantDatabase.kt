@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Plant::class], version = 3, exportSchema = false)
+@Database(entities = [Plant::class], version = 4, exportSchema = false)
 abstract class PlantDatabase : RoomDatabase() {
     abstract fun plantDao(): PlantDao
 
@@ -15,10 +15,16 @@ abstract class PlantDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: PlantDatabase? = null
 
-        // Add migrations for schema changes
+        // Migration from version 1 to 2: Add waterFrequency column
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE plants ADD COLUMN waterFrequency INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
+        // Migration from version 2 to 3: Add isFavourite column
         private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add the 'isFavourite' column to the plants table
                 database.execSQL("ALTER TABLE plants ADD COLUMN isFavourite INTEGER NOT NULL DEFAULT 0")
             }
         }
@@ -30,8 +36,8 @@ abstract class PlantDatabase : RoomDatabase() {
                     PlantDatabase::class.java,
                     "plant_database"
                 )
-                    .addMigrations(MIGRATION_2_3) // Add migration here
-                    .fallbackToDestructiveMigration() // Optional: For testing, clears database if migration is missing
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Apply both migrations
+                    .fallbackToDestructiveMigration() // Optional: Clears database for unhandled migrations during testing
                     .build()
                 INSTANCE = instance
                 instance

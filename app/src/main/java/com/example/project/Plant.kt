@@ -9,7 +9,8 @@ data class Plant(
     val name: String,
     val latinName: String,
     val imageResId: Int,
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+    val waterFrequency: Int = 0
 )
 
 

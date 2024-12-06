@@ -70,23 +70,24 @@ class SecondFragment : Fragment() {
 
             if (existingPlants.isEmpty()) {
                 val hardcodedPlants = listOf(
-                    Plant(name = "Aloe Vera", latinName = "Aloe vera", imageResId = R.drawable.aloe_vera),
-                    Plant(name = "Boston Fern", latinName = "Nephrolepis exaltata", imageResId = R.drawable.boston_fern),
-                    Plant(name = "Cast Iron Plant", latinName = "Aspidistra elatior", imageResId = R.drawable.cast_iron_plant),
-                    Plant(name = "Chinese Evergreen", latinName = "Aglaonema spp.", imageResId = R.drawable.chinese_evergreen),
-                    Plant(name = "Dracaena", latinName = "Dracaena marginata", imageResId = R.drawable.dracaena),
-                    Plant(name = "Fiddle Leaf Fig", latinName = "Ficus lyrata", imageResId = R.drawable.fiddle_leaf_fig),
-                    Plant(name = "Jade Plant", latinName = "Crassula ovata", imageResId = R.drawable.jade_plant),
-                    Plant(name = "Monstera", latinName = "Monstera deliciosa", imageResId = R.drawable.monstera),
-                    Plant(name = "Parlor Palm", latinName = "Chamaedorea elegans", imageResId = R.drawable.parlor_palm),
-                    Plant(name = "Peace Lily", latinName = "Spathiphyllum", imageResId = R.drawable.peace_lily),
-                    Plant(name = "Philodendron", latinName = "Philodendron spp.", imageResId = R.drawable.philodendron),
-                    Plant(name = "Pothos", latinName = "Epipremnum aureum", imageResId = R.drawable.pothos),
-                    Plant(name = "Rubber Plant", latinName = "Ficus elastica", imageResId = R.drawable.rubber_plant),
-                    Plant(name = "Snake Plant", latinName = "Sansevieria trifasciata", imageResId = R.drawable.snake_plant),
-                    Plant(name = "Spider Plant", latinName = "Chlorophytum comosum", imageResId = R.drawable.spider_plant),
-                    Plant(name = "ZZ Plant", latinName = "Zamioculcas zamiifolia", imageResId = R.drawable.zz_plant)
+                    Plant(name = "Aloe Vera", latinName = "Aloe vera", imageResId = R.drawable.aloe_vera, waterFrequency = 5),
+                    Plant(name = "Boston Fern", latinName = "Nephrolepis exaltata", imageResId = R.drawable.boston_fern, waterFrequency = 3),
+                    Plant(name = "Cast Iron Plant", latinName = "Aspidistra elatior", imageResId = R.drawable.cast_iron_plant, waterFrequency = 10),
+                    Plant(name = "Chinese Evergreen", latinName = "Aglaonema spp.", imageResId = R.drawable.chinese_evergreen, waterFrequency = 7),
+                    Plant(name = "Dracaena", latinName = "Dracaena marginata", imageResId = R.drawable.dracaena, waterFrequency = 14),
+                    Plant(name = "Fiddle Leaf Fig", latinName = "Ficus lyrata", imageResId = R.drawable.fiddle_leaf_fig, waterFrequency = 6),
+                    Plant(name = "Jade Plant", latinName = "Crassula ovata", imageResId = R.drawable.jade_plant, waterFrequency = 21),
+                    Plant(name = "Monstera", latinName = "Monstera deliciosa", imageResId = R.drawable.monstera, waterFrequency = 8),
+                    Plant(name = "Parlor Palm", latinName = "Chamaedorea elegans", imageResId = R.drawable.parlor_palm, waterFrequency = 15),
+                    Plant(name = "Peace Lily", latinName = "Spathiphyllum", imageResId = R.drawable.peace_lily, waterFrequency = 5),
+                    Plant(name = "Philodendron", latinName = "Philodendron spp.", imageResId = R.drawable.philodendron, waterFrequency = 7),
+                    Plant(name = "Pothos", latinName = "Epipremnum aureum", imageResId = R.drawable.pothos, waterFrequency = 10),
+                    Plant(name = "Rubber Plant", latinName = "Ficus elastica", imageResId = R.drawable.rubber_plant, waterFrequency = 14),
+                    Plant(name = "Snake Plant", latinName = "Sansevieria trifasciata", imageResId = R.drawable.snake_plant, waterFrequency = 21),
+                    Plant(name = "Spider Plant", latinName = "Chlorophytum comosum", imageResId = R.drawable.spider_plant, waterFrequency = 9),
+                    Plant(name = "ZZ Plant", latinName = "Zamioculcas zamiifolia", imageResId = R.drawable.zz_plant, waterFrequency = 30)
                 )
+
                 plantDao.insertAll(hardcodedPlants)
                 Log.d("SecondFragment", "Hardcoded plants inserted into database")
             }

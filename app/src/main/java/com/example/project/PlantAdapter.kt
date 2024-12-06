@@ -19,6 +19,7 @@ class PlantAdapter(
         val plantName: TextView = itemView.findViewById(R.id.tvPlantName)
         val plantLatinName: TextView = itemView.findViewById(R.id.tvLatinName)
         val btnAdd: ImageButton = itemView.findViewById(R.id.btnAdd)
+        val waterFrequency: TextView = itemView.findViewById(R.id.waterFrequency)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlantViewHolder {
@@ -31,6 +32,8 @@ class PlantAdapter(
         holder.plantName.text = plant.name
         holder.plantLatinName.text = plant.latinName
         holder.plantImage.setImageResource(plant.imageResId)
+        holder.waterFrequency.text = "💧 ${plant.waterFrequency} days"
+
 
         // Handle the + button click
         holder.btnAdd.setOnClickListener {
