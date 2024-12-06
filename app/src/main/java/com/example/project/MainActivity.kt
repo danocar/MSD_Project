@@ -1,5 +1,7 @@
 package com.example.project
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: FragmentPageAdapter
+    private lateinit var sharedPreferences: SharedPreferences
 
     // Initialize PlantsViewModel here to make it accessible to all fragments
     private val plantsViewModel: PlantsViewModel by viewModels()
@@ -18,6 +21,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+
+        // Check login state
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        if (!isLoggedIn) {
+            // Redirect to LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         tabLayout = findViewById(R.id.tabLayout)
         viewPager2 = findViewById(R.id.viewPager2)
@@ -47,4 +62,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
