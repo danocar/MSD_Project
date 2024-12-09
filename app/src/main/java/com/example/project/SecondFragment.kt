@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import android.util.Log
 
+// Fragment for displaying and managing the "Find Plants" page
 class SecondFragment : Fragment() {
     private lateinit var plantAdapter: PlantAdapter
     private val plantsViewModel: PlantsViewModel by activityViewModels()
     private lateinit var plantDao: PlantDao
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,13 +26,14 @@ class SecondFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
 
-        // Initialise plantDao from the database
+        // Initialize plantDao from the database
         val database = PlantDatabase.getDatabase(requireContext())
         plantDao = database.plantDao()
 
         // Set up RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvFindPlants)
         plantAdapter = PlantAdapter(mutableListOf()) { plant ->
+            // Add plant to favourites and notify the user
             plantsViewModel.addPlantToFavourites(plant)
             Toast.makeText(context, "${plant.name} added to My Plants!", Toast.LENGTH_SHORT).show()
         }
@@ -57,13 +57,13 @@ class SecondFragment : Fragment() {
             }
         })
 
+        // Save hardcoded plants to the database if not already saved
         saveHardcodedPlantsToDatabase()
-
 
         return view
     }
 
-
+    // Save a predefined list of plants to the database
     private fun saveHardcodedPlantsToDatabase() {
         lifecycleScope.launch {
             val existingPlants = plantDao.getAllPlants()
@@ -94,15 +94,16 @@ class SecondFragment : Fragment() {
         }
     }
 
+    // Load plants from the database and update the adapter
     private fun loadPlantsFromDatabase() {
         lifecycleScope.launch {
             val plants = plantDao.getAllPlants()
             Log.d("SecondFragment", "Loaded plants: ${plants.size}")
             plantAdapter.updatePlants(plants)
-
         }
     }
 
+    // Filter plants based on the search query
     private fun filterPlants(query: String) {
         lifecycleScope.launch {
             val filteredPlants = plantDao.getAllPlants().filter {

@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+// Activity for user login and registration
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -28,20 +29,19 @@ class LoginActivity : AppCompatActivity() {
             val username = usernameField.text.toString()
             val password = passwordField.text.toString()
 
-            if (username == "admin" && password == "password") { // Replace with your logic
-                // Save login state
-                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+            // Check if the provided username and password are correct
+            if (username == "admin" && password == "password") { // Replace with actual logic
+                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply() // Save login state
 
-                // Redirect to MainActivity
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java) // Redirect to MainActivity
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show() // Show error
             }
         }
 
-        // Handle registration
+        // Handle registration button click
         registerButton.setOnClickListener {
             Toast.makeText(this, "Registration not implemented", Toast.LENGTH_SHORT).show()
         }
