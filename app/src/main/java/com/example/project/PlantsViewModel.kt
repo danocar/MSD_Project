@@ -10,13 +10,6 @@ class PlantsViewModel(application: Application) : AndroidViewModel(application) 
 
     private val plantDao = PlantDatabase.getDatabase(application).plantDao()
 
-    // Add a new plant to the database
-    fun addPlant(plant: Plant) {
-        viewModelScope.launch {
-            plantDao.insertPlant(plant)
-        }
-    }
-
     // Add plant to favourites (update 'isFavourite' to true)
     fun addPlantToFavourites(plant: Plant) {
         viewModelScope.launch {

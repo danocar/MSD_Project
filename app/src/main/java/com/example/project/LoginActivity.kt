@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordField.text.toString()
 
             // Check if the provided username and password are correct
-            if (username == "admin" && password == "password") { // Replace with actual logic
+            if (username == "admin" && password == "password") {
                 sharedPreferences.edit().putBoolean("isLoggedIn", true).apply() // Save login state
 
                 val intent = Intent(this, MainActivity::class.java) // Redirect to MainActivity

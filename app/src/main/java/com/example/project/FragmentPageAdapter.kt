@@ -6,14 +6,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 
-// Adapter for managing fragments in ViewPager2.
+// Adapter for managing fragments in ViewPager2
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
 
-    // Returns the number of fragments.
+    // Returns the number of fragments
     override fun getItemCount(): Int {
         return 2 // Two fragments: My Plants and Find Plants
     }
